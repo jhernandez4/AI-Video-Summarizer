@@ -12,17 +12,28 @@ async def root():
 
 @app.get("/get-captions/")
 async def get_captions(video_id: str):
-    response = YouTubeTranscriptApi.get_transcript(video_id)
+    languages = await get_languages(video_id)
+
+    # Get first available transcript from a language
+    response = YouTubeTranscriptApi.get_transcript(video_id, languages)
     
     caption_transcript = ""
 
     for segment in response:
-        caption_text = ' ' + segment['text'].replace('\n', ' ') + ' '
+        caption_text = ' ' + segment['text'].replace('\n', ' ') 
         caption_transcript = caption_transcript + caption_text
 
-        print(segment['text'])
-
     return caption_transcript 
+
+async def get_languages(video_id: str):
+    response = YouTubeTranscriptApi.list_transcripts(video_id)
+    
+    language_list = []
+
+    for transcript in response:
+        language_list.append(transcript.language_code)
+
+    return language_list
 
 def extract_video_id(input_str: str) -> str:
     # Check if the input is already a valid video ID
