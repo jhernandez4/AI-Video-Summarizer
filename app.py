@@ -20,10 +20,8 @@ async def get_captions(video_id: str):
     caption_transcript = ""
 
     for segment in response:
-        caption_text = ' ' + segment['text'].replace('\n', ' ') + ' '
+        caption_text = ' ' + segment['text'].replace('\n', ' ') 
         caption_transcript = caption_transcript + caption_text
-
-        print(segment['text'])
 
     return caption_transcript 
 
