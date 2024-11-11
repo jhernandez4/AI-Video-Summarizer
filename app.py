@@ -12,7 +12,8 @@ async def root():
 
 @app.get("/get-captions/")
 async def get_captions(video_id: str):
-    response = YouTubeTranscriptApi.get_transcript(video_id)
+    languages = ['en']
+    response = YouTubeTranscriptApi.get_transcript(video_id, languages)
     
     caption_transcript = ""
 
