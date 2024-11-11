@@ -25,6 +25,16 @@ async def get_captions(video_id: str):
 
     return caption_transcript 
 
+async def get_languages(video_id: str):
+    response = YouTubeTranscriptApi.list_transcripts(video_id)
+    
+    language_list = []
+
+    for transcript in response:
+        language_list.append(transcript.language_code)
+
+    return language_list
+
 def extract_video_id(input_str: str) -> str:
     # Check if the input is already a valid video ID
     if re.match(r'^[0-9A-Za-z_-]{11}$', input_str):
