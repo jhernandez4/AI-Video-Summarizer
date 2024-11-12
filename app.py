@@ -3,12 +3,29 @@ import httpx
 import os
 from youtube_transcript_api import YouTubeTranscriptApi, YouTubeRequestFailed
 import re
+import google.generativeai as genai
+from dotenv import load_dotenv
+
+load_dotenv()
+
+GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
+genai.configure(api_key=GEMINI_API_KEY)
+model = genai.GenerativeModel('gemini-1.5-flash')
 
 app = FastAPI()
 
 @app.get('/')
 async def root():
     return {"message": "Hello World"}
+
+@app.get('/generate-summary/')
+async def generate_summary(video_id: str) -> str:
+    video_transcript = await get_captions(video_id)
+    category = ['How-to Guide', 'Study Guide', 'Recipe', 'Comparison', 'Tutorial', 'Study Notes', 'Review']
+
+    response = model.generate_content(f'Generate a summary of this text in the style of a {category[-1]}: {video_transcript}')
+
+    return response.text
 
 @app.get("/get-captions/")
 async def get_captions(video_id: str):
