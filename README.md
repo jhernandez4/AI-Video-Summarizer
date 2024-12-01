@@ -30,8 +30,11 @@ virtualEnv\Scripts\activate
 ```bash
 pip install -r requirements.txt
 ```
+### 4. Install SWI-Prolog
 
-### 4. Run the App
+Download and install SWI-Prolog from [their official website](https://www.swi-prolog.org/download/stable).
+
+### 5. Run the App
 
 ```bash
 fastapi dev app.py
