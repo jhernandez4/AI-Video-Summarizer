@@ -93,20 +93,11 @@ async def generate_summary(video_transcript: str, content_analysis: Dict) -> str
     response = model.generate_content(prompt)
     return response.text
 
-def chunk_transcript(transcript: str, chunk_size: int = 500) -> list:
-    """Split transcript into smaller chunks to avoid query length issues"""
-    return [transcript[i:i + chunk_size] for i in range(0, len(transcript), chunk_size)]
-
 def analyze_content_type(transcript: str) -> Dict:
     """Analyze content type using Prolog rules"""
     transcript_lower = transcript.lower()
-    chunks = chunk_transcript(transcript_lower)  # Chunk the transcript
-    content_types = []
+    content_types = list(prolog.query(f'content_type("{transcript_lower}", Type)'))
 
-    # Query Prolog for each chunk
-    for chunk in chunks:
-        content_types += list(prolog.query(f'content_type("{chunk}", Type)'))
-    
     if content_types:
         detected_type = content_types[0].get('Type', None)
         if detected_type:
