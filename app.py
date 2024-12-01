@@ -14,7 +14,14 @@ load_dotenv()
 prolog = Prolog()
 with open('video_rules.pl', 'r') as file:
     prolog_rules = file.read()
-    prolog.assertz(prolog_rules)
+
+# Split the rules into individual rules based on period ('.')
+# and assert them one by one
+rules = prolog_rules.split('.')
+for rule in rules:
+    rule = rule.strip()  # Remove any extra whitespace
+    if rule:  # Ensure that it's not an empty string
+        prolog.assertz(rule)
 
 GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
 genai.configure(api_key=GEMINI_API_KEY)
@@ -89,21 +96,26 @@ async def generate_summary(video_transcript: str, content_analysis: Dict) -> str
 def analyze_content_type(transcript: str) -> Dict:
     """Analyze content type using Prolog rules"""
     transcript_lower = transcript.lower()
-    
-    # Query Prolog for content type
-    content_types = list(prolog.query(f"content_type('{transcript_lower}', Type)"))
-    
+    content_types = list(prolog.query(f'content_type("{transcript_lower}", Type)'))
+
     if content_types:
-        detected_type = content_types[0]['Type'].decode('utf-8')
-        return {
-            'content_type': detected_type,
-            'summary_style': STYLE_MAPPING.get(detected_type, 'General Summary')
-        }
+        detected_type = content_types[0].get('Type', None)
+        if detected_type:
+            return {
+                'content_type': detected_type,
+                'summary_style': STYLE_MAPPING.get(detected_type, 'General Summary')
+            }
+        else:
+            return {
+                'content_type': 'general',
+                'summary_style': 'General Summary'
+            }
     else:
         return {
             'content_type': 'general',
             'summary_style': 'General Summary'
         }
+
 
 # INPUT: A string representing the Video ID and a list of language codes. 
 # OUTPUT: A string containing the full transcript of the video.
