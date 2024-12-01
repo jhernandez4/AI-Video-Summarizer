@@ -9,11 +9,23 @@ body {
     flex-direction: column;
 }
 
+#title {
+    font-size: 50px; /* Big font size */
+    font-weight: bold; /* Make it bold */
+    text-align: center; /* Center align the text */
+    border-radius: 10px; /* Rounded corners */
+    margin-bottom: 40px;
+}
+
 form {
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 10px;
+}
+
+#input-link {
+    width: 450px;
 }
 
 .submit {
@@ -40,11 +52,6 @@ form {
     align-items: center;
     justify-content: center;
     gap: 20px;
-}
-
-h3 {
-    text-align: center;
-    font-size: 36px;
 }
 
 .summary-box {
