@@ -21,7 +21,7 @@ form {
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
 }
 
 #input-link {
@@ -36,6 +36,14 @@ form {
     border-radius: 20px;
     padding: 0.5em;
     line-height: 0.5;
+    border: none;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.submit:hover {
+    box-shadow: 0 0 15px rgba(125, 254, 140, 0.8);
+    transform: scale(1.1);
+    cursor: pointer;
 }
 
 .entry {
