@@ -1,11 +1,14 @@
 document.getElementById("submit-button").addEventListener("click", async () => {
     const url = document.getElementById("input-link").value;
     const summaryBox = document.getElementById("summary-box");
+    const spinner = document.getElementById("loading-spinner");
 
     if (!url) {
         alert('Please enter a YouTube link');
         return;
     }
+
+    spinner.style.display = "block"; // Show the spinner
 
     try {
         // Send request to backend
@@ -18,10 +21,10 @@ document.getElementById("submit-button").addEventListener("click", async () => {
         });
 
         const data = await response.json();
+        spinner.style.display = "none"; // Hide the spinner
 
         if (response.ok) {
             // Update the summary box with the generated summary
-            summaryBox.innerHTML = "";
             summaryBox.innerHTML = data.summary;
         } else {
             // Show error details in the summary box
@@ -29,6 +32,7 @@ document.getElementById("submit-button").addEventListener("click", async () => {
         }
     } 
     catch (error) {
+        spinner.style.display = "none"; // Hide the spinner
         summaryBox.innerHTML = `Error: ${error.message}`;
     }
 });

@@ -72,3 +72,22 @@ form {
     resize: vertical;
     height: auto;
 }
+
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.2); /* Light gray background of spinner */
+    border-top: 4px solid rgb(125, 254, 140); /* Green "active" part */
+    border-radius: 50%; /* Make it a circle */
+    width: 30px; /* Size of the spinner */
+    height: 30px; /* Size of the spinner */
+    animation: spin 1s linear infinite; /* Rotating animation */
+    margin: 10px auto; /* Center it horizontally and add spacing */
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
