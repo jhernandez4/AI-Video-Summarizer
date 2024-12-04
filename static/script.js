@@ -44,12 +44,8 @@ document.getElementById('summary-box').addEventListener('click', function () {
     // Select the content inside the summary-box
     let summaryContent = document.getElementById('summary-box');
 
-     // Create a new clipboard item with HTML content
-    const blob = new Blob([summaryContent.innerHTML], { type: 'text/html' });
-    const clipboardItem = new ClipboardItem({ 'text/html': blob });
-
     // Use the Clipboard API to copy the text
-    navigator.clipboard.write([clipboardItem])
+    navigator.clipboard.writeText(summaryContent.innerText)
         .then(function() {
             // Optionally, show a toast or alert to notify the user
             showToast('Summary copied to clipboard!', 1);
