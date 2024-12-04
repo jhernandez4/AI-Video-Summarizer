@@ -1,14 +1,16 @@
+const inputField = document.getElementById("input-link");
+const spinner = document.getElementById("loading-spinner");
+
 document.getElementById("submit-button").addEventListener("click", async () => {
-    const url = document.getElementById("input-link").value;
+    const url = inputField.value.trim();
     const summaryBox = document.getElementById("summary-box");
-    const spinner = document.getElementById("loading-spinner");
 
     if (!url) {
-        alert('Please enter a YouTube link');
+        alertInputField();
         return;
     }
 
-    spinner.style.display = "block"; // Show the spinner
+    toggleSpinner("block"); // Show spinner
 
     try {
         // Send request to backend
@@ -21,18 +23,39 @@ document.getElementById("submit-button").addEventListener("click", async () => {
         });
 
         const data = await response.json();
-        spinner.style.display = "none"; // Hide the spinner
+        toggleSpinner("none"); // Hide spinner
 
         if (response.ok) {
             // Update the summary box with the generated summary
             summaryBox.innerHTML = data.summary;
         } else {
-            // Show error details in the summary box
-            summaryBox.innerHTML = `Error: ${data.detail}`;
+            alertInputField();
+            showToast(`Error: ${data.detail}`);
         }
     } 
     catch (error) {
-        spinner.style.display = "none"; // Hide the spinner
-        summaryBox.innerHTML = `Error: ${error.message}`;
+        toggleSpinner("none");
+        alertInputField();
+        showToast(`Error: ${error.message}`);
     }
 });
+
+// Functions for Visual Feedback 
+function showToast(message) {
+    const toast = document.getElementById("toast");
+    toast.textContent = message;
+    toast.classList.add("show");
+
+    setTimeout(() => {
+        toast.classList.remove("show");
+    }, 10000); // Toast disappears after 3 seconds
+}
+
+function toggleSpinner(display_type){
+    spinner.style.display = display_type;
+}
+
+function alertInputField(){
+    inputField.classList.add("input-error");
+    setTimeout(() => inputField.classList.remove("input-error"), 1000);
+}
