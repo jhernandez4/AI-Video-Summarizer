@@ -30,22 +30,48 @@ document.getElementById("submit-button").addEventListener("click", async () => {
             summaryBox.innerHTML = data.summary;
         } else {
             alertInputField();
-            showToast(`Error: ${data.detail}`);
+            showToast(`Error: ${data.detail}`, 0);
         }
     } 
     catch (error) {
         toggleSpinner("none");
         alertInputField();
-        showToast(`Error: ${error.message}`);
+        showToast(`Error: ${error.message}`, 0);
     }
 });
 
+document.getElementById('summary-box').addEventListener('click', function () {
+    // Select the content inside the summary-box
+    let summaryContent = document.getElementById('summary-box');
+
+     // Create a new clipboard item with HTML content
+    const blob = new Blob([summaryContent.innerHTML], { type: 'text/html' });
+    const clipboardItem = new ClipboardItem({ 'text/html': blob });
+
+    // Use the Clipboard API to copy the text
+    navigator.clipboard.write([clipboardItem])
+        .then(function() {
+            // Optionally, show a toast or alert to notify the user
+            showToast('Summary copied to clipboard!', 1);
+        })
+        .catch(function(err) {
+            // Handle error if copying fails
+            showToast(err, 0);
+        });
+});
+
 // Functions for Visual Feedback 
-function showToast(message) {
+function showToast(message, message_type) {
     const toast = document.getElementById("toast");
     toast.textContent = message;
     toast.classList.add("show");
 
+    if (message_type == 1){
+        toast.style.backgroundColor = "rgba(61, 227, 150, 0.8)";
+    }
+    else if (message_type == 0){
+        toast.style.backgroundColor = "rgba(255, 0, 0, 0.8)";
+    }
     setTimeout(() => {
         toast.classList.remove("show");
     }, 10000); // Toast disappears after 3 seconds
