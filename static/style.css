@@ -71,7 +71,9 @@ form {
     padding: 15px;
     border-radius: 10px;
     resize: vertical;
-    height: auto;
+    height: 20rem;
+    overflow: auto;
+    cursor: pointer;
 }
 
 .spinner {
