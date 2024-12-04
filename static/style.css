@@ -7,6 +7,7 @@ body {
     /* background-attachment: fixed; */
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 #title {
@@ -77,8 +78,8 @@ form {
     border: 4px solid rgba(0, 0, 0, 0.2); /* Light gray background of spinner */
     border-top: 4px solid rgb(125, 254, 140); /* Green "active" part */
     border-radius: 50%; /* Make it a circle */
-    width: 30px; /* Size of the spinner */
-    height: 30px; /* Size of the spinner */
+    width: 23px; /* Size of the spinner */
+    height: 23px; /* Size of the spinner */
     animation: spin 1s linear infinite; /* Rotating animation */
     margin: 10px auto; /* Center it horizontally and add spacing */
 }
@@ -90,4 +91,38 @@ form {
     100% {
         transform: rotate(360deg);
     }
+}
+
+.input-error {
+    border: 2px solid red;
+    animation: shake 0.3s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+}
+
+.toast {
+    position: fixed; /* Ensures the toast is fixed in the viewport */
+    bottom: 20px; /* Distance from the bottom of the viewport */
+    left: 50%; /* Center horizontally */
+    background-color: rgba(255, 0, 0, 0.8); /* Red for errors */
+    width: 30rem;
+    margin-top: 2rem;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 14px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    opacity: 0; /* Hidden by default */
+    transform: translateY(50px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
 }
