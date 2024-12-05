@@ -1,7 +1,10 @@
 from fastapi import FastAPI, HTTPException
 import httpx
 import os
-from youtube_transcript_api import YouTubeTranscriptApi, NoTranscriptAvailable, VideoUnavailable, InvalidVideoId
+from youtube_transcript_api import (
+    YouTubeTranscriptApi, NoTranscriptAvailable, VideoUnavailable, 
+    InvalidVideoId, TranscriptsDisabled
+)
 import re
 import google.generativeai as genai
 from dotenv import load_dotenv
@@ -91,10 +94,13 @@ async def video_summarizer(url: YoutubeLink):
     except NoTranscriptAvailable:
         # Raised if transcripts are unavailable for the video
         raise HTTPException(status_code=404, detail="Transcripts are unavailable for this video")
+    
+    except TranscriptsDisabled:
+        raise HTTPException(status_code=404, detail="Subtitles are disabled or unavailable for this video")
 
     except Exception as e:
         # Catch any other unforeseen errors
-        raise HTTPException(status_code=500, detail=f"An unexpected error occurred: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"{str(e)}")
 
 
 
