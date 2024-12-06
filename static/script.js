@@ -1,11 +1,16 @@
+const inputField = document.getElementById("input-link");
+const spinner = document.getElementById("loading-spinner");
+
 document.getElementById("submit-button").addEventListener("click", async () => {
-    const url = document.getElementById("input-link").value;
+    const url = inputField.value.trim();
     const summaryBox = document.getElementById("summary-box");
 
     if (!url) {
-        alert('Please enter a YouTube link');
+        alertInputField();
         return;
     }
+
+    toggleSpinner("block"); // Show spinner
 
     try {
         // Send request to backend
@@ -18,17 +23,61 @@ document.getElementById("submit-button").addEventListener("click", async () => {
         });
 
         const data = await response.json();
+        toggleSpinner("none"); // Hide spinner
 
         if (response.ok) {
             // Update the summary box with the generated summary
-            summaryBox.innerHTML = "";
             summaryBox.innerHTML = data.summary;
         } else {
-            // Show error details in the summary box
-            summaryBox.innerHTML = `Error: ${data.detail}`;
+            alertInputField();
+            showToast(`Error: ${data.detail}`, 0);
         }
     } 
     catch (error) {
-        summaryBox.innerHTML = `Error: ${error.message}`;
+        toggleSpinner("none");
+        alertInputField();
+        showToast(`Error: ${error.message}`, 0);
     }
 });
+
+document.getElementById('summary-box').addEventListener('click', function () {
+    // Select the content inside the summary-box
+    let summaryContent = document.getElementById('summary-box');
+
+    // Use the Clipboard API to copy the text
+    navigator.clipboard.writeText(summaryContent.innerText)
+        .then(function() {
+            // Optionally, show a toast or alert to notify the user
+            showToast('Summary copied to clipboard!', 1);
+        })
+        .catch(function(err) {
+            // Handle error if copying fails
+            showToast(err, 0);
+        });
+});
+
+// Functions for Visual Feedback 
+function showToast(message, message_type) {
+    const toast = document.getElementById("toast");
+    toast.textContent = message;
+    toast.classList.add("show");
+
+    if (message_type == 1){
+        toast.style.backgroundColor = "rgba(61, 227, 150, 0.8)";
+    }
+    else if (message_type == 0){
+        toast.style.backgroundColor = "rgba(255, 0, 0, 0.8)";
+    }
+    setTimeout(() => {
+        toast.classList.remove("show");
+    }, 10000); // Toast disappears after 3 seconds
+}
+
+function toggleSpinner(display_type){
+    spinner.style.display = display_type;
+}
+
+function alertInputField(){
+    inputField.classList.add("input-error");
+    setTimeout(() => inputField.classList.remove("input-error"), 1000);
+}
