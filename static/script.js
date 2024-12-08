@@ -61,16 +61,20 @@ function showToast(message, message_type) {
     const toast = document.getElementById("toast");
     toast.textContent = message;
     toast.classList.add("show");
+    let toast_duration;
 
     if (message_type == 1){
         toast.style.backgroundColor = "rgba(61, 227, 150, 0.8)";
+        toast_duration = 3000; // Toast disappears after 3 seconds
     }
-    else if (message_type == 0){
+    else {
         toast.style.backgroundColor = "rgba(255, 0, 0, 0.8)";
+        toast_duration = 10000;
     }
+
     setTimeout(() => {
         toast.classList.remove("show");
-    }, 10000); // Toast disappears after 3 seconds
+    }, toast_duration); // Toast disappears after 3 seconds
 }
 
 function toggleSpinner(display_type){
