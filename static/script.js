@@ -74,7 +74,7 @@ function showToast(message, message_type) {
 
     setTimeout(() => {
         toast.classList.remove("show");
-    }, toast_duration); // Toast disappears after 3 seconds
+    }, toast_duration); 
 }
 
 function toggleSpinner(display_type){
