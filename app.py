@@ -30,9 +30,23 @@ for rule in rules:
     if rule:  # Ensure that it's not an empty string
         prolog.assertz(rule)
 
+# Load system instruction from a text file
+def load_system_instruction(file_path: str) -> str:
+    with open(file_path, 'r', encoding='utf-8') as file:
+        return file.read()
+
+# Path to the system instruction file
+instruction_file = "system_instruction.txt"
+
+# Load the instruction
+system_instruction = load_system_instruction(instruction_file)
+
 GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
 genai.configure(api_key=GEMINI_API_KEY)
-model = genai.GenerativeModel('gemini-1.5-flash')
+model = genai.GenerativeModel(
+    model_name='gemini-1.5-flash',
+    system_instruction=system_instruction
+)
 
 # Style mapping for different content types
 STYLE_MAPPING = {
