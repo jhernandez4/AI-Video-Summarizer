@@ -120,7 +120,6 @@ async def video_summarizer(url: YoutubeLink):
 
 # INPUT: A string containing the text to be summarized. 
 # OUTPUT: A string with the summary generated using the Gemini API.
-@app.get('/generate-summary/')
 async def generate_summary(video_transcript: str, content_analysis: Dict) -> str:
     prompt = f"""Generate a summary of this text in the style of a {content_analysis['summary_style']}.
     This content has been classified as: {content_analysis['content_type']}.
@@ -155,10 +154,7 @@ def analyze_content_type(transcript: str) -> Dict:
 
 # INPUT: A string representing the Video ID and a list of language codes. 
 # OUTPUT: A string containing the full transcript of the video.
-@app.get("/get-captions/")
 async def get_captions(video_id: str, languages: list[str]):
-    languages = languages
-
     # Get first available transcript from a language
     response = YouTubeTranscriptApi.get_transcript(video_id, languages)
     
@@ -166,7 +162,7 @@ async def get_captions(video_id: str, languages: list[str]):
 
     for segment in response:
         caption_text = ' ' + segment['text'].replace('\n', ' ') 
-        caption_transcript = caption_transcript + caption_text
+        caption_transcript += caption_text
 
     return caption_transcript 
 
