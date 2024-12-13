@@ -61,15 +61,13 @@ function showToast(message, message_type) {
     const toast = document.getElementById("toast");
     toast.textContent = message;
     toast.classList.add("show");
-    let toast_duration;
+    let toast_duration = 3000;
 
     if (message_type == 1){
         toast.style.backgroundColor = "rgba(61, 227, 150, 0.8)";
-        toast_duration = 3000; // Toast disappears after 3 seconds
     }
     else {
         toast.style.backgroundColor = "rgba(255, 0, 0, 0.8)";
-        toast_duration = 10000;
     }
 
     setTimeout(() => {
