@@ -1,5 +1,10 @@
 # YouTube Video Summarizer  
-
+## Project Structure
+- **static/**: Contains the HTML, CSS, and JavaScript files for the front-end of the web app.
+- **app.py**: The FastAPI backend, which includes helper functions and an endpoint for generating summaries from a YouTube link.
+- **requirements.txt**: A file that lists the Python dependencies required for the project. Install dependencies with `pip install -r requirements.txt`.
+- **system_instruction.txt**: Contains system instructions for the Gemini API to guide the summarization process.
+- **video_rules.pl**: Prolog rules used to analyze video transcriptions and identify the key content type to help generate a more accurate summary.
 ## Project Setup
 ### 1. Clone the Repo
 ```bash
