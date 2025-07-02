@@ -39,7 +39,16 @@ pip install -r requirements.txt
 
 Download and install SWI-Prolog from [their official website](https://www.swi-prolog.org/download/stable).
 
-### 5. Run the App
+### 5. Create a `.env` file 
+
+Create a `.env` file in the root of your directory and add the following line:
+
+```txt
+GEMINI_API_KEY="MY_GEMINI_API_KEY"
+```
+Get an official Gemini API key here: https://ai.google.dev/gemini-api/docs/quickstart#before_you_begin
+
+### 6. Run the App
 
 ```bash
 fastapi dev app.py
