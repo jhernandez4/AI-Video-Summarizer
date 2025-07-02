@@ -42,6 +42,9 @@ instruction_file = "system_instruction.txt"
 system_instruction = load_system_instruction(instruction_file)
 
 GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
+if GEMINI_API_KEY is None:
+    raise ValueError("Missing GEMINI_API_KEY environment variable")
+
 genai.configure(api_key=GEMINI_API_KEY)
 model = genai.GenerativeModel(
     model_name='gemini-1.5-flash',
