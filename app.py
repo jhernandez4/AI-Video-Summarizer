@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 import httpx
 import os
 from youtube_transcript_api import (
-    YouTubeTranscriptApi, NoTranscriptAvailable, VideoUnavailable, 
+    YouTubeTranscriptApi, VideoUnavailable, 
     InvalidVideoId, TranscriptsDisabled
 )
 import re
@@ -16,6 +16,8 @@ from pydantic import BaseModel
 import markdown
 
 load_dotenv()
+
+ytt_api = YouTubeTranscriptApi()
 
 # Initialize Prolog and load rules
 prolog = Prolog()
@@ -108,10 +110,6 @@ async def video_summarizer(url: YoutubeLink):
         # Raised if the video cannot be found or is unavailable
         raise HTTPException(status_code=404, detail="Video not found or unavailable")
 
-    except NoTranscriptAvailable:
-        # Raised if transcripts are unavailable for the video
-        raise HTTPException(status_code=404, detail="Transcripts are unavailable for this video")
-    
     except TranscriptsDisabled:
         raise HTTPException(status_code=404, detail="Subtitles are disabled or unavailable for this video")
 
@@ -159,7 +157,7 @@ def analyze_content_type(transcript: str) -> Dict:
 # OUTPUT: A string containing the full transcript of the video.
 async def get_captions(video_id: str, languages: list[str]):
     # Get first available transcript from a language
-    response = YouTubeTranscriptApi.get_transcript(video_id, languages)
+    response = ytt_api.fetch(video_id, languages).to_raw_data()
     
     caption_transcript = ""
 
@@ -172,7 +170,7 @@ async def get_captions(video_id: str, languages: list[str]):
 # INPUT: A string representing the Video ID of a YouTube video.  
 # OUTPUT: A list of language codes (e.g., ['en', 'es', 'fr']) available.
 async def get_languages(video_id: str):
-    response = YouTubeTranscriptApi.list_transcripts(video_id)
+    response = ytt_api.list(video_id)
 
     language_list = []
 
